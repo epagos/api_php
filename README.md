@@ -6,3 +6,5 @@ En la carpeta **/post** encontrará la forma de iniciar la petición y obtener s
 El script **/post/obtener_token.php** a través de un POST HTTP envia las credenciales de login, obteniendo como respuesta de Epagos un código único denominado **token** que permitirá luego redireccionar al usuario a completar su pago.
 
 La segunda parte del script **/post/obtener_token.php** realiza la redirección propiamente dicha para que el usuario realice el pago y luego retorne con la respuesta a sus URLs de Error u OK.
+
+En la carpeta **/api** está el ejemplo de cómo consultar a través del Webservice los pagos realizados a través de la plataforma.
