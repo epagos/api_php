@@ -81,9 +81,9 @@ if (empty($respuesta->token)){
 $token = $respuesta->token;
 
 if (SANDBOX)
-  $url = 'http://post.epagos.com.ar';
-else
   $url = "http://postsandbox.epagos.com.ar";
+else
+  $url = 'http://post.epagos.com.ar';
 
 //TODO: personalizar con sus valores y detalles a enviar
 $detalle_op = urlencode(json_encode(array(array('id_item'=>'1','desc_item'=>'DescripCion','monto_item'=>'120','cantidad_item'=>'1'))));
