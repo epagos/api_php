@@ -98,6 +98,15 @@ $datos_post = array(
   'detalle_operacion'   => $detalle_op,
   'ok_url'              => $ok_url,
   'error_url'           => $error_url,
+  //
+  // Usos avanzados
+  //
+  // - Para restringir que solo se vean determinados medios de pago:
+  // $datos_post['fp_permitidas'] = serialize(array(1, 2, 3, 9, 10, 11));
+  //
+  // - Para excluir determinados medios de pago:
+  // $datos_post['fp_excluidas'] = serialize(array(1, 2, 3));
+  //
 );
 
 post_conredireccion($url, $datos_post);
