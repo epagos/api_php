@@ -96,6 +96,8 @@ $datos_post = array(
   'id_moneda_operacion' => '1',
   'monto_operacion'     => '120',
   'detalle_operacion'   => $detalle_op,
+  // En el caso de que se desee mostrar el usuario el detalle en la pantalla de pago, incluir:
+  //  'detalle_operacion_visible' => 1,  
   'ok_url'              => $ok_url,
   'error_url'           => $error_url,
   //
