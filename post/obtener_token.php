@@ -44,23 +44,20 @@ function post_conredireccion($url, $fields){
             </html>");
 }
 
-if (SANDBOX){
+//TODO: reemplazar con las credenciales asignadas
+$id_organismo = ID_ORGANISMO;
+$id_usuario   = ID_USUARIO;
+$password     = PASSWORD;
+$hash         = HASH;
+
+//TODO: reemplazar con los suyos
+$ok_url       = 'https://postsandbox.epagos.com.ar/tests/ok.php';
+$error_url    = 'https://postsandbox.epagos.com.ar/tests/error.php';
+
+if (SANDBOX)
   $url = 'https://sandbox.epagos.com.ar/post.php';
-} else {  
+else
   $url = 'https://api.epagos.com.ar/post.php';
-  //TODO: reemplazar con las credenciales asignadas
-  $id_organismo = 0;
-  $id_usuario   = 0;
-  $password     = '';
-  $hash         = '';
-
-  //TODO: reemplazar con los suyos
-  $ok_url       = 'https://postsandbox.epagos.com.ar/tests/ok.php';
-  $error_url    = 'https://postsandbox.epagos.com.ar/tests/error.php';
-
-} else {
-  exit("");
-}
 
 $output = post($url, array(
   'id_usuario'   => $id_usuario,

@@ -3,15 +3,20 @@
  * Prueba el método que obtiene los pagos realizados
  */
 
+define("ID_ORGANISMO", ""); //TODO: ccmpletar con el ID de organismo proporcionado
+define("ID_USUARIO",   ""); //TODO: ccmpletar con el ID de usuario proporcionado
+define("PASSWORD",     ""); //TODO: ccmpletar con el password proporcionado
+define("HASH",         ""); //TODO: ccmpletar con el hash proporcionado
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
-$id_organismo = <id_organismo>;
+$id_organismo = ID_ORGANISMO;
 $credenciales = array(
-  'id_usuario'   => <id_usuario>,
+  'id_usuario'   => ID_USUARIO,
   'id_organismo' => $id_organismo,
-  'password'     => <password>,
-  'hash'         => <hash>
+  'password'     => PASSWORD,
+  'hash'         => HASH
 );
 $wsdl = 'https://sandbox.epagos.com.ar/wsdl/index.php?wsdl';
 
