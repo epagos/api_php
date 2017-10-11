@@ -134,12 +134,81 @@ class epagos_api {
   }
 
   /**
+   * Genera un token por medio de un POST HTTP para las credenciales especificadas
+   * @param string $password El password del usuario
+   * @param string $hash El hash del usuario
+   * @return object
+   * @throws EPagos_Exception
+   */
+  public function obtener_token_post($password, $hash){
+    if (!$password){
+      throw new EPagos_Exception("Debe indicar el password recibido para la implementación");
+    }
+    if (!$hash){
+      throw new EPagos_Exception("Debe indicar el hash recibido para la implementación");
+    }
+
+    $fields = [
+      'id_usuario'   => $this->_id_usuario,
+      'id_organismo' => $this->_id_organismo,
+      'password'     => $password,
+      'hash'         => $hash
+    ];
+    $post_field_string = http_build_query($fields, '', '&');
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $this->get_url_token());
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_field_string);
+    curl_setopt($ch, CURLOPT_POST, true);
+    $response = curl_exec($ch);
+
+    // control de error HTTP
+    if ($response === FALSE) {
+      throw new EPagos_Exception(curl_error($ch));
+    }
+
+    curl_close($ch);
+    $resultado = json_decode($response);
+    if ($resultado->token)
+      $this->_token = $resultado->token;
+
+    return $resultado;
+  }
+
+  /**
+   * Realiza una solicitud de pago a través del POST que redirige al usuario
+   * @param array $datos Vector con los parámetros del pago
+   */
+  public function solicitud_pago_post($datos){
+    $datos['version']      = $this->get_version();
+    $datos['operacion']    = 'op_pago';
+    $datos['id_organismo'] = $this->_id_organismo;
+    $datos['token']        = $this->_token;
+
+    $s_fields = "";
+    foreach ($datos as $field_key => $field_value){
+      $s_fields .= "<input type='hidden' name='".$field_key."' value='".$field_value."' />";
+    }
+
+    exit("<html>
+              <body>
+                <form name='f' method='post' action='".$this->get_url_post()."'>".$s_fields."</form>
+                <script type='text/javascript'>document.forms.f.submit();</script>  
+              </body>
+            </html>");
+  }
+
+  /**
    * Devuelve la versión actual de la API
    * @return string
    */
   public function get_version(){
     return '1.0';
   }
+
+  /********************************** Métodos privados *******************************************/
 
   /**
    * Devuelve la URL a donde enviar las solicitudes de API
@@ -150,5 +219,27 @@ class epagos_api {
       return 'https://api.epagos.com.ar/wsdl/index.php?wsdl';
     else
       return 'https://sandbox.epagos.com.ar/wsdl/index.php?wsdl';
+  }
+
+  /**
+   * Devuelve la URL a donde obtener el token
+   * @return string
+   */
+  private function get_url_token(){
+    if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION)
+      return 'https://api.epagos.com.ar/post.php';
+    else
+      return 'https://sandbox.epagos.com.ar/post.php';
+  }
+
+  /**
+   * Devuelve la URL a donde enviar al usuario para completar la solicitud de pago
+   * @return string
+   */
+  private function get_url_post(){
+    if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION)
+      return 'https://post.epagos.com.ar';
+    else
+      return "https://postsandbox.epagos.com.ar";
   }
 }
