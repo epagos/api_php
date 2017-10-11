@@ -1,6 +1,6 @@
 <?php
 define("EPAGOS_ENTORNO_SANDBOX",    0);
-define("EPAGOS_ENTORNO_PRODUCCIOM", 1);
+define("EPAGOS_ENTORNO_PRODUCCION", 1);
 
 class EPagos_Exception extends Exception {}
 
@@ -146,7 +146,7 @@ class epagos_api {
    * @return string
    */
   private function get_url(){
-    if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCIOM)
+    if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION)
       return 'https://api.epagos.com.ar/wsdl/index.php?wsdl';
     else
       return 'https://sandbox.epagos.com.ar/wsdl/index.php?wsdl';
