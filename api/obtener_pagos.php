@@ -12,13 +12,14 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 require "epagos_api.class.php";
-$epagos = new epagos_api(ID_ORGANISMO, ID_USUARIO);
-//
-// el SDK soporta dos entornos:
-// Testing    -> EPAGOS_ENTORNO_SANDBOX
-// Producción -> EPAGOS_ENTORNO_PRODUCCION
-//
 try {
+  $epagos = new epagos_api(ID_ORGANISMO, ID_USUARIO);
+
+  //
+  // el SDK soporta dos entornos:
+  // Testing    -> EPAGOS_ENTORNO_SANDBOX
+  // Producción -> EPAGOS_ENTORNO_PRODUCCION
+  //
   $epagos->set_entorno(EPAGOS_ENTORNO_SANDBOX);
   $ret = $epagos->obtener_token(PASSWORD, HASH);
   if (!$ret["token"]) {
@@ -47,6 +48,18 @@ try {
   echo "Resultado: <b>obtener_pagos</b>";
   echo "<pre>";
   print_r($pagos);
+  echo "</pre>";
+
+  //
+  // consulta la documentación para ver los criterios de búsqueda posibles
+  // las fechas son generalmente en el rango de un día
+  //
+  $criterios = ["Fecha_desde" => "2016-06-03", "Fecha_hasta" => "2016-06-04"];
+  echo "</pre>";
+  $rendiciones = $epagos->obtener_rendiciones($criterios);
+  echo "Resultado: <b>obtener_rendiciones</b>";
+  echo "<pre>";
+  print_r($rendiciones);
   echo "</pre>";
 
 } catch (EPagos_Exception $e){

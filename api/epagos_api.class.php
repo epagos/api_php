@@ -201,6 +201,30 @@ class epagos_api {
   }
 
   /**
+   * Obtener la lista de las rendiciones del sistema
+   * @param array $criterios Vector con los criterios de consulta
+   * @return array
+   * @throws EPagos_Exception
+   */
+  public function obtener_rendiciones($criterios = []){
+    if (count($criterios) == 0){
+      throw new EPagos_Exception("Debe indicar algún crtierio de búsqueda de las rendiciones");
+    }
+
+    $credenciales = array(
+      "id_organismo" => $this->_id_organismo,
+      "token"        => $this->_token,
+    );
+
+    $resultado = $this->_cliente->obtener_rendiciones($this->get_version(), $credenciales, $criterios);
+    if (is_soap_fault($resultado)) {
+      throw new EPagos_Exception($this->_cliente->faultcode." - ".$this->_cliente->faultstring);
+    }
+
+    return $resultado;
+  }
+
+  /**
    * Devuelve la versión actual de la API
    * @return string
    */
