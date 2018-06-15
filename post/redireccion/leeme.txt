@@ -1,0 +1,2 @@
+Este ejemplo muestra como incorporar el llamado a la página de redirección de E-Pagos enviando al usuario fuera de su sitio web (luego retornará en el llamado a url OK o url de ERROR).
+La ejecución comienza en inicio.php
