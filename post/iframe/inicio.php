@@ -3,7 +3,7 @@
  * Probador de la generación de Token para la página de POST
  * Pasos:
  *   1 - Generar el token
- *   2 - Invocar al formulario de POST con ese token y los otros parámetros necesarios,
+ *   2 - Invocar al formulario de POST para un IFRAME con ese token y los otros parámetros necesarios,
  *       puede invocarse al formulario intermedio de tests/inicio.php para completar
  *       los otros parámetros desde una interfaz más cómoda.
  */
@@ -11,7 +11,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
-include("../api/epagos_api.class.php");
+include("../../api/epagos_api.class.php");
 
 define("ID_ORGANISMO", ""); //TODO: ccmpletar con el ID de organismo proporcionado
 define("ID_USUARIO",   ""); //TODO: ccmpletar con el ID de usuario proporcionado
@@ -23,7 +23,16 @@ define("URL_OK",       "https://postsandbox.epagos.com.ar/tests/ok.php");
 //TODO: reemplazar por su URL para el caso de pago con errores
 define("URL_ERROR",    "https://postsandbox.epagos.com.ar/tests/error.php");
 
-$epagos = new epagos_api(ID_ORGANISMO, ID_USUARIO);
+try {
+  $epagos = new epagos_api(ID_ORGANISMO, ID_USUARIO);
+} catch (EPagos_Exception $e){
+  echo "Error: Constructor:";
+  echo "<pre>";
+  print_r($e);
+  echo "</pre>";
+  exit;
+}
+
 //
 // el SDK soporta dos entornos:
 // Testing    -> EPAGOS_ENTORNO_SANDBOX
@@ -62,6 +71,7 @@ try {
     ]
   ));
   $datos_post = [
+    'convenio' => '00000',
     'numero_operacion' => '1',
     'id_moneda_operacion' => '1',
     'monto_operacion' => 480,   // TODO: reemplazar por el importe de la operación
@@ -81,8 +91,11 @@ try {
     // - Para excluir determinados medios de pago:
     // $datos_post['fp_excluidas'] = serialize([1, 2, 3]);
     //
+    // - Para excluir determinados tipos de formas de pago:
+    // $datos_post['tp_excluidos'] = serialize([1, 2]);
+    //
   ];
-  $epagos->solicitud_pago_post($datos_post);
+  $epagos->solicitud_pago_post_iframe($datos_post);
 
 } catch (EPagos_Exception $e){
   echo "Error: ".$e->getMessage();

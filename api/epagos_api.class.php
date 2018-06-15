@@ -178,6 +178,36 @@ class epagos_api {
   }
 
   /**
+   * Realiza una solicitud de pago pero con un iframe con el POST que redirige al usuario
+   * @param array $datos Vector con los parámetros del pago
+   */
+  public function solicitud_pago_post_iframe($datos){
+    $datos['version']      = $this->get_version();
+    $datos['operacion']    = 'op_pago';
+    $datos['id_organismo'] = $this->_id_organismo;
+    $datos['token']        = $this->_token;
+
+    $s_fields = "";
+    foreach ($datos as $field_key => $field_value){
+      $s_fields .= "<input type='hidden' name='".$field_key."' value='".$field_value."' />";
+    }
+
+    exit("<html>
+              <body>
+                <form name='f' target='epagos_iframe' method='post' action='".$this->get_url_post()."'>".$s_fields."</form>
+                <h1>Esta es su página web</h1>
+                <p>Debajo coloca el iframe integrado a su web:</p>
+                <iframe name='epagos_iframe' frameborder='0' src='#' style='width: 100%; height: 500px'></iframe>  
+                <script type='text/javascript'>
+                document.addEventListener(\"DOMContentLoaded\", function() { 
+                  document.forms.f.submit();
+                });
+                </script>
+              </body>
+            </html>");
+  }
+
+  /**
    * Realiza una solicitud de pago a través del POST que redirige al usuario
    * @param array $datos Vector con los parámetros del pago
    */
