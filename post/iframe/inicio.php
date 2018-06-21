@@ -17,6 +17,7 @@ define("ID_ORGANISMO", ""); //TODO: ccmpletar con el ID de organismo proporciona
 define("ID_USUARIO",   ""); //TODO: ccmpletar con el ID de usuario proporcionado
 define("PASSWORD",     ""); //TODO: ccmpletar con el password proporcionado
 define("HASH",         ""); //TODO: ccmpletar con el hash proporcionado
+define("CONVENIO",     ""); //TODO: ccmpletar con el convenio recibido
 
 //TODO: reemplazar por su URL para el caso de pago correcto (no implica acreditado)
 define("URL_OK",       "https://postsandbox.epagos.com.ar/tests/ok.php");
@@ -71,7 +72,7 @@ try {
     ]
   ));
   $datos_post = [
-    'convenio' => '00000',
+    'convenio' => CONVENIO,
     'numero_operacion' => '1',
     'id_moneda_operacion' => '1',
     'monto_operacion' => 480,   // TODO: reemplazar por el importe de la operación
