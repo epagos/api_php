@@ -1,6 +1,6 @@
 <?php
 /**
- * Ejemplo del método que obtiene los pagos realizados para su organismo
+ * Ejemplo del método que obtiene las entidades de pago disponibles para su organismo
  */
 
 define("ID_ORGANISMO", ""); //TODO: ccmpletar con el ID de organismo proporcionado
@@ -34,13 +34,11 @@ try {
   //
   // consulta la documentación para ver los criterios de búsqueda posibles
   //
-  $criterios = ["Estado" => "A"];
-  echo "</pre>";
-  $pagos = $epagos->obtener_pagos($criterios);
-  echo "Resultado: <b>obtener_pagos</b>";
+  $criterios = [];
+  $entidades = $epagos->obtener_entidades_pago($criterios);
+  echo "Resultado: <b>obtener_entidades_pago</b>";
   echo "<pre>";
-  print_r($pagos);
-  echo "</pre>";
+  print_r($entidades);
 
 } catch (EPagos_Exception $e){
   echo "Error: ".$e->getMessage();

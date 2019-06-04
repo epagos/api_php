@@ -1,6 +1,6 @@
 <?php
 /**
- * Ejemplo del método que obtiene los pagos realizados para su organismo
+ * Ejemplo de uso del método que obtiene las rendiciones a su organismo
  */
 
 define("ID_ORGANISMO", ""); //TODO: ccmpletar con el ID de organismo proporcionado
@@ -33,13 +33,14 @@ try {
 
   //
   // consulta la documentación para ver los criterios de búsqueda posibles
+  // las fechas son generalmente en el rango de un día
   //
-  $criterios = ["Estado" => "A"];
+  $criterios = ["Fecha_desde" => "2016-06-03", "Fecha_hasta" => "2016-06-04"];
   echo "</pre>";
-  $pagos = $epagos->obtener_pagos($criterios);
-  echo "Resultado: <b>obtener_pagos</b>";
+  $rendiciones = $epagos->obtener_rendiciones($criterios);
+  echo "Resultado: <b>obtener_rendiciones</b>";
   echo "<pre>";
-  print_r($pagos);
+  print_r($rendiciones);
   echo "</pre>";
 
 } catch (EPagos_Exception $e){

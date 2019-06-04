@@ -1,14 +1,14 @@
 <?php
-define("EPAGOS_ENTORNO_SANDBOX",    0);
-define("EPAGOS_ENTORNO_PRODUCCION", 1);
+define('EPAGOS_ENTORNO_SANDBOX',    0);
+define('EPAGOS_ENTORNO_PRODUCCION', 1);
 
 class EPagos_Exception extends Exception {}
 
 /**
  * Gestiona la API de EPagos
  * User: Alejandro Salgueiro
- * Date: 11/10/2017
- * @version 1.0
+ * Date: 04/06/2019
+ * @version 2.0
  */
 class epagos_api {
   private $_id_organismo = null;
@@ -17,7 +17,7 @@ class epagos_api {
   private $_entorno      = EPAGOS_ENTORNO_SANDBOX;
   private $_cliente      = null;
 
-  private $_token        = "";
+  private $_token        = '';
 
   /**
    * epagos_api constructor.
@@ -54,6 +54,7 @@ class epagos_api {
    * @param string $hash El hash del usuario
    * @return array
    * @throws EPagos_Exception
+   * @throws SoapFault
    */
   public function obtener_token($password, $hash){
     if (!$password){
@@ -228,6 +229,35 @@ class epagos_api {
                 <script type='text/javascript'>document.forms.f.submit();</script>  
               </body>
             </html>");
+  }
+
+  /**
+   * Genera una operación via API
+   * @param array $operacion Vector con los datos de la operación
+   * @param array $fp Vector con los datos de la forma de pago
+   * @param string $convenio El número de convenio
+   * @return array
+   * @throws EPagos_Exception
+   */
+  public function solicitud_pago($operacion, $fp, $convenio=null){
+    if (count($operacion) == 0){
+      throw new EPagos_Exception("Debe indicar parámetros para iniciar un pago");
+    }
+    if (count($fp) == 0){
+      throw new EPagos_Exception("Debe indicar los datos de la forma de pago para iniciar un pago");
+    }
+
+    $credenciales = array(
+      "id_organismo" => $this->_id_organismo,
+      "token"        => $this->_token,
+    );
+
+    $resultado = $this->_cliente->solicitud_pago($this->get_version(), 'op_pago', $credenciales, $operacion, $fp, $convenio);
+    if (is_soap_fault($resultado)) {
+      throw new EPagos_Exception($this->_cliente->faultcode." - ".$this->_cliente->faultstring);
+    }
+
+    return $resultado;
   }
 
   /**
