@@ -1,0 +1,90 @@
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- bootstrap (opcional, solo para la página de demo) -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="row">
+    <div class="col-md-12">
+      <p>Seleccione la forma de pago</p>
+    </div>
+  </div>
+
+  <!-- para mostrar el mensaje en caso de error -->
+  <div class="row" id="div_error_cnt" style="display: none">
+    <div class="col-md-12">
+      <div id="div_error" class="alert alert-danger"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <!-- un botón de ejemplo para otro gateway -->
+      <div><button class="btn btn-primary">Otro gateway</button></div><br>
+      <!-- botones de E-Pago, puede usar uno o más  -->
+      <div id="epagos_btn_1"></div><br>
+      <div id="epagos_btn_2"></div>
+    </div>
+  </div>
+
+  <!-- comienzo del script de E-Pagos -->
+  <script type="text/javascript">
+    var script = document.createElement("script");
+    script.addEventListener("load", function() {
+      window.addEventListener("errorCapture", function(event)  {
+        // acá escriba su código de manejo de errores
+        document.getElementById('div_error').innerHTML = event.detail.mensaje;
+        document.getElementById('div_error_cnt').style.display = 'inline';
+      });
+
+      ePagos.setClavePublica(""); // TODO: completar con la credencial pública asignada
+      ePagos.setOrganismo('');    // TODO: completar con el número de organismo asignado
+      ePagos.setAmbiente("T");    // TODO: definir el entorno (T=Testing, P=Producción)
+
+      <!-- primer botón de E-Pagos -->
+      ePagos.botonPago({
+        "datosOperacion": {
+          //Los datos de operacion: convenio, ok_url, error_url y monto_operacion son datos obligatorios.
+          "convenio": "00000",    // TODO: número de convenio asingado
+          "ok_url": "",           // TODO: url a donde redirigir en caso de éxito
+          "error_url": "",        // TODO: url a donde redirigir en caso de error
+          "monto_operacion": 1500 // TODO: importe a cobrar
+        },
+        "atributos": {
+          "label": "E-Pagos $ 1500",            // opcional
+          "elemento_destino": "epagos_btn_1",   // opcional
+          "className": "btn btn-danger",        // opcional
+          "style": ""                           // opcional
+        }
+      });
+
+      <!-- segundo botón de E-Pagos -->
+      ePagos.botonPago({
+        "datosOperacion": {
+          //Los datos de operacion: convenio, ok_url, error_url y monto_operacion son datos obligatorios.
+          "convenio": "00000",    // TODO: número de convenio asingado
+          "ok_url": "",           // TODO: url a donde redirigir en caso de éxito
+          "error_url": "",        // TODO: url a donde redirigir en caso de error
+          "monto_operacion": 100  // TODO: importe a cobrar
+        },
+        "atributos": {
+          "label": "E-Pagos $ 100",             // opcional
+          "elemento_destino": "epagos_btn_2",   // opcional
+          "className": "btn btn-danger",        // opcional
+          "style": ""                           // opcional
+        }
+      });
+    });
+    script.src = "https://sandbox.epagos.com.ar/quickstart/epagos.min.js"; // TODO: esta es la url de la librería para sandbox
+    script.async = true;
+    document.getElementsByTagName("script")[0].parentNode.appendChild(script);
+  </script>
+  <!-- fin  del script de E-Pagos -->
+</body>
+</html>
