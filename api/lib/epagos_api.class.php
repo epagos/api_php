@@ -7,8 +7,8 @@ class EPagos_Exception extends Exception {}
 /**
  * Gestiona la API de EPagos
  * User: Alejandro Salgueiro
- * Date: 04/06/2019
- * @version 2.0
+ * Date: 01/10/2019
+ * @version 2.1
  */
 class epagos_api {
   private $_id_organismo = null;
@@ -26,11 +26,11 @@ class epagos_api {
    * @throws EPagos_Exception
    */
   public function __construct($id_organismo, $id_usuario) {
-    if ($id_organismo === ""){
-      throw new EPagos_Exception("Debe indicar el ID de organismo recibido para la implementación");
+    if ($id_organismo === ''){
+      throw new EPagos_Exception('Debe indicar el ID de organismo recibido para la implementación');
     }
     if (!$id_usuario){
-      throw new EPagos_Exception("Debe indicar el ID de usuario recibido para la implementación");
+      throw new EPagos_Exception('Debe indicar el ID de usuario recibido para la implementación');
     }
     $this->_id_organismo = $id_organismo;
     $this->_id_usuario   = $id_usuario;
@@ -42,8 +42,8 @@ class epagos_api {
    * @throws EPagos_Exception
    */
   public function set_entorno($entorno){
-    if (!in_array($entorno, [1,0])){
-      throw new EPagos_Exception("Indique un entorno válido");
+    if (!in_array($entorno, [1, 0])){
+      throw new EPagos_Exception('Indique un entorno válido');
     }
     $this->_entorno = $entorno;
   }
@@ -58,10 +58,10 @@ class epagos_api {
    */
   public function obtener_token($password, $hash){
     if (!$password){
-      throw new EPagos_Exception("Debe indicar el password recibido para la implementación");
+      throw new EPagos_Exception('Debe indicar el password recibido para la implementación');
     }
     if (!$hash){
-      throw new EPagos_Exception("Debe indicar el hash recibido para la implementación");
+      throw new EPagos_Exception('Debe indicar el hash recibido para la implementación');
     }
 
     $credenciales = array(
@@ -72,21 +72,21 @@ class epagos_api {
     );
 
     $this->_cliente = new SoapClient($this->get_url(), array(
-      "soap_version" => SOAP_1_1,
-      "trace" => true,
-      "exceptions" => false,
-      "cache_wsdl" => WSDL_CACHE_NONE,
+      'soap_version'  => SOAP_1_1,
+      'trace'         => true,
+      'exceptions'    => false,
+      'cache_wsdl'    => WSDL_CACHE_NONE
     ));
     if (is_soap_fault($this->_cliente)) {
-      throw new EPagos_Exception($this->_cliente->faultcode." - ".$this->_cliente->faultstring);
+      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
     }
 
     $resultado = $this->_cliente->obtener_token($this->get_version(), $credenciales);
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode." - ".$this->_cliente->faultstring);
+      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
     }
 
-    $this->_token = $resultado["token"];
+    $this->_token = $resultado['token'];
     return $resultado;
   }
 
@@ -98,17 +98,17 @@ class epagos_api {
    */
   public function obtener_pagos($criterios = []){
     if (count($criterios) == 0){
-      throw new EPagos_Exception("Debe indicar algún crtierio de búsqueda de los pagos");
+      throw new EPagos_Exception('Debe indicar algún crtierio de búsqueda de los pagos');
     }
 
     $credenciales = array(
-      "id_organismo" => $this->_id_organismo,
-      "token"        => $this->_token,
+      'id_organismo' => $this->_id_organismo,
+      'token'        => $this->_token
     );
 
     $resultado = $this->_cliente->obtener_pagos($this->get_version(), $credenciales, $criterios);
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode." - ".$this->_cliente->faultstring);
+      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
     }
 
     return $resultado;
@@ -122,13 +122,13 @@ class epagos_api {
    */
   public function obtener_entidades_pago($criterios = []){
     $credenciales = array(
-      "id_organismo" => $this->_id_organismo,
-      "token"        => $this->_token,
+      'id_organismo' => $this->_id_organismo,
+      'token'        => $this->_token
     );
 
     $resultado = $this->_cliente->obtener_entidades_pago($this->get_version(), $credenciales, $criterios);
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode." - ".$this->_cliente->faultstring);
+      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
     }
 
     return $resultado;
@@ -143,10 +143,10 @@ class epagos_api {
    */
   public function obtener_token_post($password, $hash){
     if (!$password){
-      throw new EPagos_Exception("Debe indicar el password recibido para la implementación");
+      throw new EPagos_Exception('Debe indicar el password recibido para la implementación');
     }
     if (!$hash){
-      throw new EPagos_Exception("Debe indicar el hash recibido para la implementación");
+      throw new EPagos_Exception('Debe indicar el hash recibido para la implementación');
     }
 
     $fields = [
@@ -241,20 +241,44 @@ class epagos_api {
    */
   public function solicitud_pago($operacion, $fp, $convenio=null){
     if (count($operacion) == 0){
-      throw new EPagos_Exception("Debe indicar parámetros para iniciar un pago");
+      throw new EPagos_Exception('Debe indicar parámetros para iniciar un pago');
     }
     if (count($fp) == 0){
-      throw new EPagos_Exception("Debe indicar los datos de la forma de pago para iniciar un pago");
+      throw new EPagos_Exception('Debe indicar los datos de la forma de pago para iniciar un pago');
     }
 
     $credenciales = array(
-      "id_organismo" => $this->_id_organismo,
-      "token"        => $this->_token,
+      'id_organismo' => $this->_id_organismo,
+      'token'        => $this->_token
     );
 
     $resultado = $this->_cliente->solicitud_pago($this->get_version(), 'op_pago', $credenciales, $operacion, $fp, $convenio);
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode." - ".$this->_cliente->faultstring);
+      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
+    }
+
+    return $resultado;
+  }
+
+  /**
+   * Genera un lote de una o más operaciones via API
+   * @param array $lote Vector con los datos de las operaciones a generar
+   * @return array
+   * @throws EPagos_Exception
+   */
+  public function solicitud_pago_lote($lote){
+    if (count($lote) == 0){
+      throw new EPagos_Exception('Debe indicar los parámetros para iniciar los pagos');
+    }
+
+    $credenciales = array(
+      'id_organismo' => $this->_id_organismo,
+      'token'        => $this->_token
+    );
+
+    $resultado = $this->_cliente->solicitud_pago_lote($this->get_version(), 'op_pago', $credenciales, $lote);
+    if (is_soap_fault($resultado)) {
+      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
     }
 
     return $resultado;
@@ -268,17 +292,17 @@ class epagos_api {
    */
   public function obtener_rendiciones($criterios = []){
     if (count($criterios) == 0){
-      throw new EPagos_Exception("Debe indicar algún crtierio de búsqueda de las rendiciones");
+      throw new EPagos_Exception('Debe indicar algún crtierio de búsqueda de las rendiciones');
     }
 
     $credenciales = array(
-      "id_organismo" => $this->_id_organismo,
-      "token"        => $this->_token,
+      'id_organismo' => $this->_id_organismo,
+      'token'        => $this->_token
     );
 
     $resultado = $this->_cliente->obtener_rendiciones($this->get_version(), $credenciales, $criterios);
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode." - ".$this->_cliente->faultstring);
+      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
     }
 
     return $resultado;
@@ -324,6 +348,6 @@ class epagos_api {
     if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION)
       return 'https://post.epagos.com.ar';
     else
-      return "https://postsandbox.epagos.com.ar";
+      return 'https://postsandbox.epagos.com.ar';
   }
 }
