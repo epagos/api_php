@@ -11,7 +11,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
-include("../../api/epagos_api.class.php");
+include("../../api/lib/epagos_api.class.php");
 
 define("ID_ORGANISMO", ""); //TODO: ccmpletar con el ID de organismo proporcionado
 define("ID_USUARIO",   ""); //TODO: ccmpletar con el ID de usuario proporcionado
