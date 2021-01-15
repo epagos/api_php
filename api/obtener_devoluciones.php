@@ -1,6 +1,6 @@
 <?php
 /**
- * Ejemplo del método que obtiene los pagos realizados para su organismo
+ * Ejemplo del método que obtiene las operaciones pagadas que fueron devueltas para su organismo
  */
 
 define("ID_ORGANISMO", ""); //TODO: ccmpletar con el ID de organismo proporcionado
@@ -34,10 +34,10 @@ try {
   //
   // consulta la documentación para ver los criterios de búsqueda posibles
   //
-  $criterios = ["Estado" => "A", "FechaNovedadAcreditacionDesde" => date('Y-m-d', strtotime('now -1 month'))];
+  $criterios = ["FechaNovedadAcreditacionDesde" => '2020-09-01',"FechaNovedadAcreditacionHasta" => '2020-09-20'];
   echo "</pre>";
-  $pagos = $epagos->obtener_pagos($criterios);
-  echo "Resultado: <b>obtener_pagos</b>";
+  $pagos = $epagos->obtener_devoluciones($criterios);
+  echo "Resultado: <b>obtener_devoluciones</b>";
   echo "<pre>";
   print_r($pagos);
   echo "</pre>";

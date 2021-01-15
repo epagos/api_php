@@ -97,9 +97,35 @@ class epagos_api {
    * @throws EPagos_Exception
    */
   public function obtener_pagos($criterios = []){
-    if (count($criterios) == 0){
+    if (empty($criterios)){
       throw new EPagos_Exception('Debe indicar algún crtierio de búsqueda de los pagos');
     }
+
+    $credenciales = array(
+      'id_organismo' => $this->_id_organismo,
+      'token'        => $this->_token
+    );
+
+    $resultado = $this->_cliente->obtener_pagos($this->get_version(), $credenciales, $criterios);
+    if (is_soap_fault($resultado)) {
+      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
+    }
+
+    return $resultado;
+  }
+
+  /**
+   * Devuelve la consulta de las devoluciones especificadas
+   * @param array $criterios Vector con los criterios de consulta
+   * @return array
+   * @throws EPagos_Exception
+   */
+  public function obtener_devoluciones($criterios = []){
+    if (empty($criterios)){
+      throw new EPagos_Exception('Debe indicar algún crtierio de búsqueda de las devoluciones');
+    }
+
+    $criterios['Estado'] = 'D';
 
     $credenciales = array(
       'id_organismo' => $this->_id_organismo,
