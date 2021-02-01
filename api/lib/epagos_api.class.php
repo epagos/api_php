@@ -16,6 +16,7 @@ class epagos_api {
 
   private $_entorno      = EPAGOS_ENTORNO_SANDBOX;
   private $_cliente      = null;
+  private $_debug        = [];
 
   private $_token        = '';
 
@@ -49,6 +50,14 @@ class epagos_api {
   }
 
   /**
+   * Devuelve el último error producido
+   * @return null|array
+   */
+  public function getDebug(){
+    return $this->_debug;
+  }
+
+  /**
    * Genera un token para las credenciales especificadas
    * @param string $password El password del usuario
    * @param string $hash El hash del usuario
@@ -77,11 +86,16 @@ class epagos_api {
       'exceptions'    => false,
       'cache_wsdl'    => WSDL_CACHE_NONE
     ));
+
     if (is_soap_fault($this->_cliente)) {
+      $this->_debug[] = 'obtener_token :: '.$this->_cliente->__getLastResponse();
       throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
     }
 
     $resultado = $this->_cliente->obtener_token($this->get_version(), $credenciales);
+
+    $this->_debug[] = 'obtener_token :: '.$this->_cliente->__getLastResponse();
+
     if (is_soap_fault($resultado)) {
       throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
     }
@@ -99,6 +113,10 @@ class epagos_api {
   public function obtener_pagos($criterios = []){
     if (empty($criterios)){
       throw new EPagos_Exception('Debe indicar algún crtierio de búsqueda de los pagos');
+    }
+
+    if (!$this->_cliente){
+      throw new EPagos_Exception('Debe invocar primero al obtener_token');
     }
 
     $credenciales = array(
@@ -124,6 +142,9 @@ class epagos_api {
     if (empty($criterios)){
       throw new EPagos_Exception('Debe indicar algún crtierio de búsqueda de las devoluciones');
     }
+    if (!$this->_cliente){
+      throw new EPagos_Exception('Debe invocar primero al obtener_token');
+    }
 
     $criterios['Estado'] = 'D';
 
@@ -147,6 +168,10 @@ class epagos_api {
    * @throws EPagos_Exception
    */
   public function obtener_entidades_pago($criterios = []){
+    if (!$this->_cliente){
+      throw new EPagos_Exception('Debe invocar primero al obtener_token');
+    }
+
     $credenciales = array(
       'id_organismo' => $this->_id_organismo,
       'token'        => $this->_token
@@ -266,11 +291,14 @@ class epagos_api {
    * @throws EPagos_Exception
    */
   public function solicitud_pago($operacion, $fp, $convenio=null){
-    if (count($operacion) == 0){
+    if (empty($operacion)){
       throw new EPagos_Exception('Debe indicar parámetros para iniciar un pago');
     }
-    if (count($fp) == 0){
+    if (empty($fp)){
       throw new EPagos_Exception('Debe indicar los datos de la forma de pago para iniciar un pago');
+    }
+    if (!$this->_cliente){
+      throw new EPagos_Exception('Debe invocar primero al obtener_token');
     }
 
     $credenciales = array(
@@ -279,6 +307,9 @@ class epagos_api {
     );
 
     $resultado = $this->_cliente->solicitud_pago($this->get_version(), 'op_pago', $credenciales, $operacion, $fp, $convenio);
+
+    $this->_debug[] = 'solicitud_pago :: '.$this->_cliente->__getLastResponse();
+
     if (is_soap_fault($resultado)) {
       throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
     }
@@ -293,8 +324,11 @@ class epagos_api {
    * @throws EPagos_Exception
    */
   public function solicitud_pago_lote($lote){
-    if (count($lote) == 0){
+    if (empty($lote)){
       throw new EPagos_Exception('Debe indicar los parámetros para iniciar los pagos');
+    }
+    if (!$this->_cliente){
+      throw new EPagos_Exception('Debe invocar primero al obtener_token');
     }
 
     $credenciales = array(
@@ -303,6 +337,9 @@ class epagos_api {
     );
 
     $resultado = $this->_cliente->solicitud_pago_lote($this->get_version(), 'op_pago', $credenciales, $lote);
+
+    $this->_debug[] = 'solicitud_pago_lote :: '.$this->_cliente->__getLastResponse();
+
     if (is_soap_fault($resultado)) {
       throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
     }
@@ -317,8 +354,11 @@ class epagos_api {
    * @throws EPagos_Exception
    */
   public function obtener_rendiciones($criterios = []){
-    if (count($criterios) == 0){
+    if (empty($criterios)){
       throw new EPagos_Exception('Debe indicar algún crtierio de búsqueda de las rendiciones');
+    }
+    if (!$this->_cliente){
+      throw new EPagos_Exception('Debe invocar primero al obtener_token');
     }
 
     $credenciales = array(
