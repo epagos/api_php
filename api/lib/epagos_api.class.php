@@ -280,7 +280,7 @@ class epagos_api {
 
     $resultado = $this->_cliente->solicitud_pago($this->get_version(), 'op_pago', $credenciales, $operacion, $fp, $convenio);
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
+      throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
     }
 
     return $resultado;
@@ -304,7 +304,7 @@ class epagos_api {
 
     $resultado = $this->_cliente->solicitud_pago_lote($this->get_version(), 'op_pago', $credenciales, $lote);
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
+      throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
     }
 
     return $resultado;
@@ -328,7 +328,7 @@ class epagos_api {
 
     $resultado = $this->_cliente->obtener_rendiciones($this->get_version(), $credenciales, $criterios);
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
+      throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
     }
 
     return $resultado;
