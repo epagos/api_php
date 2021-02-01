@@ -11,6 +11,8 @@ class EPagos_Exception extends Exception {}
  * @version 2.1
  */
 class epagos_api {
+  const DEBUG_ACTIVADO   = false;
+
   private $_id_organismo = null;
   private $_id_usuario   = null;
 
@@ -88,13 +90,17 @@ class epagos_api {
     ));
 
     if (is_soap_fault($this->_cliente)) {
-      $this->_debug[] = 'obtener_token :: '.$this->_cliente->__getLastResponse();
+      if (self::DEBUG_ACTIVADO){
+        $this->_debug[] = 'obtener_token :: '.$this->_cliente->__getLastResponse();
+      }
       throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
     }
 
     $resultado = $this->_cliente->obtener_token($this->get_version(), $credenciales);
 
-    $this->_debug[] = 'obtener_token :: '.$this->_cliente->__getLastResponse();
+    if (self::DEBUG_ACTIVADO) {
+      $this->_debug[] = 'obtener_token :: ' . $this->_cliente->__getLastResponse();
+    }
 
     if (is_soap_fault($resultado)) {
       throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
@@ -308,7 +314,9 @@ class epagos_api {
 
     $resultado = $this->_cliente->solicitud_pago($this->get_version(), 'op_pago', $credenciales, $operacion, $fp, $convenio);
 
-    $this->_debug[] = 'solicitud_pago :: '.$this->_cliente->__getLastResponse();
+    if (self::DEBUG_ACTIVADO) {
+      $this->_debug[] = 'solicitud_pago :: ' . $this->_cliente->__getLastResponse();
+    }
 
     if (is_soap_fault($resultado)) {
       throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
@@ -338,7 +346,9 @@ class epagos_api {
 
     $resultado = $this->_cliente->solicitud_pago_lote($this->get_version(), 'op_pago', $credenciales, $lote);
 
-    $this->_debug[] = 'solicitud_pago_lote :: '.$this->_cliente->__getLastResponse();
+    if (self::DEBUG_ACTIVADO) {
+      $this->_debug[] = 'solicitud_pago_lote :: ' . $this->_cliente->__getLastResponse();
+    }
 
     if (is_soap_fault($resultado)) {
       throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
