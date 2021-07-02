@@ -3,10 +3,11 @@
  * Ejemplo del método que obtiene las entidades de pago disponibles para su organismo
  */
 
-define("ID_ORGANISMO", ""); //TODO: ccmpletar con el ID de organismo proporcionado
-define("ID_USUARIO",   ""); //TODO: ccmpletar con el ID de usuario proporcionado
-define("PASSWORD",     ""); //TODO: ccmpletar con el password proporcionado
-define("HASH",         ""); //TODO: ccmpletar con el hash proporcionado
+const ID_ORGANISMO = ""; //TODO: ccmpletar con el ID de organismo proporcionado
+const ID_USUARIO   = ""; //TODO: ccmpletar con el ID de usuario proporcionado
+const PASSWORD     = ""; //TODO: ccmpletar con el password proporcionado
+const HASH         = ""; //TODO: ccmpletar con el hash proporcionado
+const CONVENIO     = ""; //TODO: completar con el convenio proporcionado
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

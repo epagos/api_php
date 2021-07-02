@@ -3,11 +3,11 @@
  * Ejemplo del método que genera un lote de pagos via API para su organismo
  */
 
-define("ID_ORGANISMO", ""); //TODO: ccmpletar con el ID de organismo proporcionado
-define("ID_USUARIO",   ""); //TODO: ccmpletar con el ID de usuario proporcionado
-define("PASSWORD",     ""); //TODO: ccmpletar con el password proporcionado
-define("HASH",         ""); //TODO: ccmpletar con el hash proporcionado
-define("CONVENIO",     ""); //TODO: completar con el convenio proporcionado
+const ID_ORGANISMO = ""; //TODO: ccmpletar con el ID de organismo proporcionado
+const ID_USUARIO   = ""; //TODO: ccmpletar con el ID de usuario proporcionado
+const PASSWORD     = ""; //TODO: ccmpletar con el password proporcionado
+const HASH         = ""; //TODO: ccmpletar con el hash proporcionado
+const CONVENIO     = ""; //TODO: completar con el convenio proporcionado
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -104,8 +104,11 @@ try {
     "numero_operacion"         => '',
     "identificador_externo_2"  => '',
     "identificador_externo_3"  => '',
+    "identificador_externo_4"  => '',
     "opc_pdf"                  => $opc_pdf,
-    "opc_fecha_vencimiento"    => ''
+    "opc_fecha_vencimiento"    => '',
+    "identificador_cliente"    => '',
+    "url_boleta"               => ''
   ];
   $operacion_2 = [
     "id_moneda_operacion"      => '1',
@@ -115,8 +118,11 @@ try {
     "numero_operacion"         => '',
     "identificador_externo_2"  => '',
     "identificador_externo_3"  => '',
+    "identificador_externo_4"  => '',
     "opc_pdf"                  => $opc_pdf,
-    "opc_fecha_vencimiento"    => ''
+    "opc_fecha_vencimiento"    => '',
+    "identificador_cliente"    => '',
+    "url_boleta"               => ''
   ];
 
   // datos de la forma de pago

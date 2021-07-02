@@ -1,14 +1,14 @@
 <?php
-define('EPAGOS_ENTORNO_SANDBOX',    0);
-define('EPAGOS_ENTORNO_PRODUCCION', 1);
+const EPAGOS_ENTORNO_SANDBOX    = 0;
+const EPAGOS_ENTORNO_PRODUCCION = 1;
 
 class EPagos_Exception extends Exception {}
 
 /**
  * Gestiona la API de EPagos
  * User: Alejandro Salgueiro
- * Date: 01/10/2019
- * @version 2.1
+ * Date: 02/07/2021
+ * @version 3.0
  */
 class epagos_api {
   const DEBUG_ACTIVADO   = false;
@@ -312,7 +312,14 @@ class epagos_api {
       'token'        => $this->_token
     );
 
-    $resultado = $this->_cliente->solicitud_pago($this->get_version(), 'op_pago', $credenciales, $operacion, $fp, $convenio);
+    $resultado = $this->_cliente->solicitud_pago(
+      $this->get_version(),
+      'op_pago',
+      $credenciales,
+      $operacion,
+      $fp,
+      $convenio
+    );
 
     if (self::DEBUG_ACTIVADO) {
       $this->_debug[] = 'solicitud_pago :: ' . $this->_cliente->__getLastResponse();
@@ -389,7 +396,7 @@ class epagos_api {
    * @return string
    */
   public function get_version(){
-    return '1.0';
+    return '2.0';
   }
 
   /********************************** Métodos privados *******************************************/
@@ -399,10 +406,11 @@ class epagos_api {
    * @return string
    */
   private function get_url(){
-    if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION)
-      return 'https://api.epagos.com.ar/wsdl/index.php?wsdl';
-    else
-      return 'https://sandbox.epagos.com.ar/wsdl/index.php?wsdl';
+    if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION){
+      return 'https://api.epagos.com.ar/wsdl/2.0/index.php?wsdl';
+    } else {
+      return 'https://sandbox.epagos.com.ar/wsdl/2.0/index.php?wsdl';
+    }
   }
 
   /**
@@ -410,10 +418,11 @@ class epagos_api {
    * @return string
    */
   private function get_url_token(){
-    if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION)
+    if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION) {
       return 'https://api.epagos.com.ar/post.php';
-    else
+    } else {
       return 'https://sandbox.epagos.com.ar/post.php';
+    }
   }
 
   /**
@@ -421,9 +430,10 @@ class epagos_api {
    * @return string
    */
   private function get_url_post(){
-    if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION)
+    if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION) {
       return 'https://post.epagos.com.ar';
-    else
+    } else {
       return 'https://postsandbox.epagos.com.ar';
+    }
   }
 }

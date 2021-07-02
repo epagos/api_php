@@ -3,11 +3,11 @@
  * Ejemplo del método que genera un pago via API para su organismo
  */
 
-define("ID_ORGANISMO", ""); //TODO: ccmpletar con el ID de organismo proporcionado
-define("ID_USUARIO",   ""); //TODO: ccmpletar con el ID de usuario proporcionado
-define("PASSWORD",     ""); //TODO: ccmpletar con el password proporcionado
-define("HASH",         ""); //TODO: ccmpletar con el hash proporcionado
-define("CONVENIO",     ""); //TODO: completar con el convenio proporcionado
+const ID_ORGANISMO = ""; //TODO: ccmpletar con el ID de organismo proporcionado
+const ID_USUARIO   = ""; //TODO: ccmpletar con el ID de usuario proporcionado
+const PASSWORD     = ""; //TODO: ccmpletar con el password proporcionado
+const HASH         = ""; //TODO: ccmpletar con el hash proporcionado
+const CONVENIO     = ""; //TODO: completar con el convenio proporcionado
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -37,13 +37,15 @@ try {
   //
 
   // datos de la operación
-  $opc_pdf        = true;                 // TODO: indica si desea obtener el pdf de la boleta generada
-  $monto          = 2000;                 // TODO: cambiar por el importe a pagar
-  $email_pagador  = 'pago@epagos.com.ar'; // TODO: cambiar por el email del pagador
-  $tipo_doc       = 1;                    // TODO: el tipo de documento del pagador (ver anexo de la documetación)
-  $nro_doc        = '12345678';           // TODO: el número de documento del pagador
-  $cuit_doc       = '20123456780';        // TODO: el número de CUIT del pagador
-  $id_fp          = 34;                   // TODO: cambiar por la forma de pago deseada
+  $opc_generar_pdf = true;                 // TODO: desactivarlo acelerará el proceso de creación de la operación si no se usará la boleta de E-Pagos
+  $opc_pdf         = true;                 // TODO: indica si desea obtener el pdf de la boleta generada
+  $monto           = 2000;                 // TODO: cambiar por el importe a pagar
+  $email_pagador   = 'pago@epagos.com.ar'; // TODO: cambiar por el email del pagador
+  $tipo_doc        = 1;                    // TODO: el tipo de documento del pagador (ver anexo de la documetación)
+  $nro_doc         = '12345678';           // TODO: el número de documento del pagador
+  $cuit_doc        = '20123456780';        // TODO: el número de CUIT del pagador
+  $id_fp           = 34;                   // TODO: cambiar por la forma de pago deseada
+
   $detalles       = [[                    // TODO: los detalles de como se compone la operación a pagar
     "id_item"       => 1,
     "desc_item"     => 'item 1',
@@ -56,16 +58,16 @@ try {
     "cantidad_item" => 1,
   ]];
   $pagador = [
-    "nombre_pagador"         => '',
-    "apellido_pagador"       => '',
-    "fechanac_pagador"       => '',
-    "email_pagador"          => $email_pagador,
-    "identificacion_pagador" => [
-      "tipo_doc_pagador"    => $tipo_doc,
-      "numero_doc_pagador"  => $nro_doc,
-      "cuit_doc_pagador"    => $cuit_doc,
+    "nombre_pagador"          => '',
+    "apellido_pagador"        => '',
+    "fechanac_pagador"        => '',
+    "email_pagador"           => $email_pagador,
+    "identificacion_pagador"  => [
+      "tipo_doc_pagador"      => $tipo_doc,
+      "numero_doc_pagador"    => $nro_doc,
+      "cuit_doc_pagador"      => $cuit_doc,
     ],
-    "domicilio_pagador"      => [
+    "domicilio_pagador"       => [
       "calle_dom_pagador"     => '',
       "numero_dom_pagador"    => '',
       "adicional_dom_pagador" => '',
@@ -74,21 +76,25 @@ try {
       "provincia_dom_pagador" => '',
       "pais_dom_pagador"      => '',
     ],
-    "telefono_pagador"       => [
-      "codigo_telef_pagador" => '',
-      "numero_telef_pagador" => '',
+    "telefono_pagador"        => [
+      "codigo_telef_pagador"  => '',
+      "numero_telef_pagador"  => '',
     ],
   ];
   $operacion = [
-    "id_moneda_operacion"      => '1',
-    "monto_operacion"          => $monto,
-    "detalle_operacion"        => $detalles,
-    "pagador"                  => $pagador,
-    "numero_operacion"         => '',
-    "identificador_externo_2"  => '',
-    "identificador_externo_3"  => '',
-    "opc_pdf"                  => $opc_pdf,
-    "opc_fecha_vencimiento"    => ''
+    "id_moneda_operacion"     => '1',
+    "monto_operacion"         => $monto,
+    "detalle_operacion"       => $detalles,
+    "pagador"                 => $pagador,
+    "numero_operacion"        => '',
+    "identificador_externo_2" => '',
+    "identificador_externo_3" => '',
+    "identificador_externo_4" => '',
+    "opc_pdf"                 => $opc_pdf,
+    "opc_fecha_vencimiento"   => '',
+    "opc_generar_pdf"         => $opc_generar_pdf,
+    "identificador_cliente"   => '',
+    "url_boleta"              => ''
   ];
 
   // datos de la forma de pago
