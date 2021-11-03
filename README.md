@@ -11,4 +11,8 @@ La segunda parte del script realiza la redirección propiamente dicha para que e
 En la carpeta **/api** está el ejemplo de cómo consultar a través del Webservice los pagos realizados a través de la plataforma, 
 así como iniciar solicitudes de pago y/o obtener las rendiciones generadas.
 
+###Requerimientos:
+ - PHP 5.6 o superior
+ - Extensión SOAP en PHP
+
 La carpeta **/quickstart** contiene un ejemplo con iframe de como implementar el botón de inicio rápido de pago usando solamente Javascript.
