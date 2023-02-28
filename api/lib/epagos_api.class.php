@@ -103,7 +103,7 @@ class epagos_api {
     }
 
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
+      throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
     }
 
     $this->_token = $resultado['token'];
@@ -132,7 +132,7 @@ class epagos_api {
 
     $resultado = $this->_cliente->obtener_pagos($this->get_version(), $credenciales, $criterios);
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
+      throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
     }
 
     return $resultado;
@@ -161,7 +161,7 @@ class epagos_api {
 
     $resultado = $this->_cliente->obtener_pagos($this->get_version(), $credenciales, $criterios);
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
+      throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
     }
 
     return $resultado;
@@ -185,7 +185,7 @@ class epagos_api {
 
     $resultado = $this->_cliente->obtener_entidades_pago($this->get_version(), $credenciales, $criterios);
     if (is_soap_fault($resultado)) {
-      throw new EPagos_Exception($this->_cliente->faultcode. ' - ' .$this->_cliente->faultstring);
+      throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
     }
 
     return $resultado;
