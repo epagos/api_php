@@ -111,6 +111,34 @@ class epagos_api {
   }
 
   /**
+   * Devuelve los pagos adicionales con los criterios indicados
+   * @param array $criterios Vector con los criterios de consulta
+   * @return array
+   * @throws EPagos_Exception
+   */
+  public function obtener_pagos_adicionales($criterios = []){
+    if (empty($criterios)){
+      throw new EPagos_Exception('Debe indicar algún crtierio de búsqueda de los pagos');
+    }
+
+    if (!$this->_cliente){
+      throw new EPagos_Exception('Debe invocar primero al obtener_token');
+    }
+
+    $credenciales = array(
+      'id_organismo' => $this->_id_organismo,
+      'token'        => $this->_token
+    );
+
+    $resultado = $this->_cliente->obtener_pagos_adicionales($this->get_version(), $credenciales, $criterios);
+    if (is_soap_fault($resultado)) {
+      throw new EPagos_Exception($resultado->faultcode. ' - ' .$resultado->faultstring);
+    }
+
+    return $resultado;
+  }
+
+  /**
    * Devuelve la consulta de los pagos especificados
    * @param array $criterios Vector con los criterios de consulta
    * @return array
