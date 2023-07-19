@@ -1,2 +1,1 @@
-Este ejemplo muestra como incorporar el llamado a la página de redirección de E-Pagos desde un IFRAME en su sitio web.
-La ejecución comienza en inicio.php
+Por motivos de seguridad se desalienta la inclusión del checkout en un <iframe>
