@@ -20,9 +20,9 @@ define("HASH",         ""); //TODO: ccmpletar con el hash proporcionado
 define("CONVENIO",     ""); //TODO: ccmpletar con el convenio recibido
 
 //TODO: reemplazar por su URL para el caso de pago correcto (no implica acreditado)
-define("URL_OK",       "https://postsandbox.epagos.com.ar/tests/ok.php");
+define("URL_OK",       "https://postsandbox.epagos.net/tests/ok.php");
 //TODO: reemplazar por su URL para el caso de pago con errores
-define("URL_ERROR",    "https://postsandbox.epagos.com.ar/tests/error.php");
+define("URL_ERROR",    "https://postsandbox.epagos.net/tests/error.php");
 
 try {
   $epagos = new epagos_api(ID_ORGANISMO, ID_USUARIO);

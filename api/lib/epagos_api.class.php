@@ -435,9 +435,9 @@ class epagos_api {
    */
   private function get_url(){
     if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION){
-      return 'https://api.epagos.com.ar/wsdl/2.0/index.php?wsdl';
+      return 'https://api.epagos.net/wsdl/2.0/index.php?wsdl';
     } else {
-      return 'https://sandbox.epagos.com.ar/wsdl/2.0/index.php?wsdl';
+      return 'https://sandbox.epagos.net/wsdl/2.0/index.php?wsdl';
     }
   }
 
@@ -447,9 +447,9 @@ class epagos_api {
    */
   private function get_url_token(){
     if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION) {
-      return 'https://api.epagos.com.ar/post.php';
+      return 'https://api.epagos.net/post.php';
     } else {
-      return 'https://sandbox.epagos.com.ar/post.php';
+      return 'https://sandbox.epagos.net/post.php';
     }
   }
 
@@ -459,9 +459,9 @@ class epagos_api {
    */
   private function get_url_post(){
     if ($this->_entorno == EPAGOS_ENTORNO_PRODUCCION) {
-      return 'https://post.epagos.com.ar';
+      return 'https://post.epagos.net';
     } else {
-      return 'https://postsandbox.epagos.com.ar';
+      return 'https://postsandbox.epagos.net';
     }
   }
 }
